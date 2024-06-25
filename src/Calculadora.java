@@ -17,13 +17,12 @@ public class Calculadora extends JFrame implements ActionListener {
     public Calculadora() {
         operacao = new CalculadoraOperacao();
 
-        setTitle("Calculadora");
-        setSize(420, 600);
+        setTitle("Calculadora by Derik");
+        setSize(400, 585);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
-        // Configurações do campo de texto
-        textfield = new JTextField(expression); // Inicializa com "0"
+        textfield = new JTextField(expression);
         textfield.setBounds(50, 25, 300, 50);
         textfield.setEditable(false);
         textfield.setBackground(Color.BLACK);
