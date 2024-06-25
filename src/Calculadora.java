@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Calculadora extends JFrame implements ActionListener {
     private final CalculadoraBotao[] numberButtons = new CalculadoraBotao[10];
@@ -18,18 +20,17 @@ public class Calculadora extends JFrame implements ActionListener {
         operacao = new CalculadoraOperacao();
 
         setTitle("Calculadora by Derik");
-        setSize(400, 585);
+        setSize(400, 550); // Aumenta um pouco o tamanho da janela para dar mais espaço
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null);
+        setLayout(new BorderLayout(10, 10)); // Adiciona um espaçamento entre os componentes
 
         textfield = new JTextField(expression);
-        textfield.setBounds(50, 25, 300, 50);
         textfield.setEditable(false);
         textfield.setBackground(Color.BLACK);
         textfield.setForeground(Color.WHITE);
         textfield.setFont(new Font("Arial", Font.PLAIN, 50));
-        textfield.setHorizontalAlignment(JTextField.RIGHT); // Centraliza o texto no campo de texto
-        textfield.setBorder(null); // Remove a borda do campo de texto
+        textfield.setHorizontalAlignment(JTextField.RIGHT);
+        textfield.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Adiciona margens ao campo de texto
 
         // Inicializando os botões
         addButton = new CalculadoraBotao("+", true, false);
@@ -59,6 +60,7 @@ public class Calculadora extends JFrame implements ActionListener {
         for (CalculadoraBotao button : functionButtons) {
             if (button != null) {
                 button.addActionListener(this);
+                addHoverEffect(button);
             }
         }
 
@@ -66,13 +68,14 @@ public class Calculadora extends JFrame implements ActionListener {
         for (int i = 0; i < 10; i++) {
             numberButtons[i] = new CalculadoraBotao(String.valueOf(i));
             numberButtons[i].addActionListener(this);
+            addHoverEffect(numberButtons[i]);
         }
 
         // Painel para os botões
         JPanel panel = new JPanel();
-        panel.setBounds(50, 100, 300, 400);
-        panel.setLayout(new GridLayout(5, 4, 10, 10));
+        panel.setLayout(new GridLayout(5, 4, 10, 10)); // Ajusta o espaçamento entre os botões
         panel.setBackground(Color.BLACK);
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Adiciona margens ao painel
 
         // Adicionando botões ao painel
         panel.add(clrButton);
@@ -97,17 +100,42 @@ public class Calculadora extends JFrame implements ActionListener {
         panel.add(equButton);
 
         // Adicionando componentes ao frame
-        add(panel);
-        add(textfield);
+        add(textfield, BorderLayout.NORTH);
+        add(panel, BorderLayout.CENTER);
 
         // Configurando o fundo do frame como preto
-        
         getContentPane().setBackground(Color.BLACK);
 
         // Bloquear a maximização da tela
         setResizable(false);
 
         setVisible(true);
+    }
+
+    private void addHoverEffect(CalculadoraBotao button) {
+        button.addMouseListener(new MouseAdapter() {
+            Color originalColor = button.getBackground();
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(Color.GRAY);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(originalColor);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                button.setBackground(Color.DARK_GRAY);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                button.setBackground(Color.GRAY);
+            }
+        });
     }
 
     public static void main(String[] args) {
